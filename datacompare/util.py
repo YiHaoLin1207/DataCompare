@@ -2,9 +2,31 @@
 import json
 
 
+def make_len_of_list_a_over_list_b(self, list_a, list_b):
+    if len(list_a) >= len(list_b):
+        pass
+    else:
+        temp_list = list_b
+        list_b = list_a
+        list_a = temp_list
+
+def trans_json_list_to_dict_list(json_list_data):
+    dict_list_data = []
+    for json_data in json_list_data:
+        dict_list_data.append(json.loads(json_data))
+    return dict_list_data
+
+
 def get_intersection_of_two_list(list_a, list_b):
     intersection = list(set(list_a).intersection(list_b))
     return intersection
+
+
+def get_diff_of_two_list(list_a, list_b):
+    if len(list_a) >= len(list_b):
+        return list(set(list_a) - set(list_b))
+    else:
+        return list(set(list_b) - set(list_a))
 
 
 def load_txt_file_to_json_list(file_path):
