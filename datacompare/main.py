@@ -6,11 +6,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from model import StudentList
 from util import load_txt_file_to_json_list
 from util import trans_json_list_to_dict_list
+from util import swap
 
 
 class Ui_MainWindow(object):
     def __init__(self):
         self.student_list = StudentList()
+        self.input_data_list_1 = []
+        self.input_data_list_2 = []
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -20,6 +23,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.startBtn = QtWidgets.QPushButton(self.centralwidget)
         self.startBtn.setGeometry(QtCore.QRect(610, 490, 161, 41))
+        self.startBtn.clicked.connect(lambda: self.set_semester_list(self.input_data_list_1, self.input_data_list_2))
         self.startBtn.clicked.connect(lambda: self.student_list.set_final_result(
                                                                 self.student_list.last_semester_student_json_list,
                                                                 self.student_list.current_semester_student_json_list))
@@ -60,7 +64,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.lineEdit_2)
         self.FileTwoBrowseBtn = QtWidgets.QPushButton(self.layoutWidget)
         self.FileTwoBrowseBtn.setObjectName("FileTwoBrowseBtn")
-        self.FileTwoBrowseBtn.clicked.connect(self.set_current_semester_list)
+        self.FileTwoBrowseBtn.clicked.connect(self.set_input_data_list_2)
         self.horizontalLayout_3.addWidget(self.FileTwoBrowseBtn)
         self.widget1 = QtWidgets.QWidget(self.frame)
         self.widget1.setGeometry(QtCore.QRect(0, 10, 551, 31))
@@ -77,7 +81,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.lineEdit)
         self.FileOneBrowseBtn = QtWidgets.QPushButton(self.widget1)
         self.FileOneBrowseBtn.setObjectName("FileOneBrowseBtn")
-        self.FileOneBrowseBtn.clicked.connect(self.set_last_semester_list)
+        self.FileOneBrowseBtn.clicked.connect(self.set_input_data_list_1)
         self.horizontalLayout_2.addWidget(self.FileOneBrowseBtn)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -109,19 +113,25 @@ class Ui_MainWindow(object):
         self.refresh_line_edit(line_edit, file_name)
         return file_name
 
-    def set_last_semester_list(self):
+    def set_input_data_list_1(self):
         file_name = self.get_file_name_from_browse_slot(self.lineEdit)
         json_list_data = load_txt_file_to_json_list(file_name)
-        self.student_list.last_semester_student_json_list = json_list_data
-        dict_list_data = trans_json_list_to_dict_list(json_list_data)
-        self.student_list.last_semester_student_dict_list = dict_list_data
+        self.input_data_list_1 = json_list_data
 
-    def set_current_semester_list(self):
+    def set_input_data_list_2(self):
         file_name = self.get_file_name_from_browse_slot(self.lineEdit_2)
         json_list_data = load_txt_file_to_json_list(file_name)
-        self.student_list.current_semester_student_json_list = json_list_data
-        dict_list_data = trans_json_list_to_dict_list(json_list_data)
+        self.input_data_list_2 = json_list_data
+
+    def set_semester_list(self, input_data_list_1, input_data_list_2):
+        if input_data_list_1 < input_data_list_2:
+            input_data_list_1, input_data_list_2 = swap(input_data_list_1, input_data_list_2)
+        self.student_list.current_semester_student_json_list = input_data_list_1
+        dict_list_data = trans_json_list_to_dict_list(input_data_list_1)
         self.student_list.current_semester_student_dict_list = dict_list_data
+        self.student_list.current_semester_student_json_list = input_data_list_2
+        dict_list_data_2 = trans_json_list_to_dict_list(input_data_list_2)
+        self.student_list.current_semester_student_dict_list = dict_list_data_2
 
     def get_row_and_column_number(self, data):
         if not data:

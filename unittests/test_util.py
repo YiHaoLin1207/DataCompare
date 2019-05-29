@@ -17,15 +17,18 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(self.list_a, ['a', 'b', 'c', 'd', 'f'])
 
     def test_intersection_of_two_list(self):
-        intersection_of_two_list = get_intersection_of_two_list(self.list_a, self.list_b)
+        list_a = self.list_a
+        list_b = self.list_b
+        intersection_of_two_list = get_intersection_of_two_list(list_a, list_b)
         self.assertEqual(intersection_of_two_list, ['c', 'b', 'a'])
+        self.assertEqual(list_a, ['c', 'b', 'a', 'e'])
+
+        intersection_of_two_list = get_intersection_of_two_list([], list_b)
+        self.assertEqual(intersection_of_two_list, [])
 
     def test_diff_of_two_list(self):
         diff_of_two_list = get_diff_of_two_list(self.list_a, self.list_b)
         self.assertEqual(diff_of_two_list, ['e'])
-
-    def test_get_new_student(self):
-        pass
 
     def tearDown(self):
         pass
