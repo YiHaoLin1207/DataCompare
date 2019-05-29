@@ -1,4 +1,6 @@
 # Robot Framework
+/sample/
+*.txt
 /robot_results/
 *.pyc
 *.log

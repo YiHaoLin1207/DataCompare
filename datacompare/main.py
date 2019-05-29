@@ -6,6 +6,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from model import StudentList
 from util import load_txt_file_to_json_list
 from util import trans_json_list_to_dict_list
+from util import filter_student_list_with_dict_key
 from util import swap
 
 
@@ -126,10 +127,13 @@ class Ui_MainWindow(object):
     def set_semester_list(self, input_data_list_1, input_data_list_2):
         if input_data_list_1 < input_data_list_2:
             input_data_list_1, input_data_list_2 = swap(input_data_list_1, input_data_list_2)
-        self.student_list.last_semester_student_json_list = input_data_list_1
-        dict_list_data = trans_json_list_to_dict_list(input_data_list_1)
+        filtered_data_list_1 = filter_student_list_with_dict_key(input_data_list_1)
+        filtered_data_list_2 = filter_student_list_with_dict_key(input_data_list_2)
+        print(filtered_data_list_1)
+        self.student_list.last_semester_student_json_list = filtered_data_list_1
+        dict_list_data = trans_json_list_to_dict_list(filtered_data_list_1)
         self.student_list.last_semester_student_dict_list = dict_list_data
-        self.student_list.current_semester_student_json_list = input_data_list_2
+        self.student_list.current_semester_student_json_list = filtered_data_list_2
         dict_list_data_2 = trans_json_list_to_dict_list(input_data_list_2)
         self.student_list.current_semester_student_dict_list = dict_list_data_2
 

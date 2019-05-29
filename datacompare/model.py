@@ -16,13 +16,11 @@ class StudentList:
         self.final_result = []
 
     def get_finished_older_student(self, last_semester_student_json_list, current_semester_student_json_list):
-        input_data_is_valid(last_semester_student_json_list, current_semester_student_json_list)
         finished_older_student_json_list = get_intersection_of_two_list(last_semester_student_json_list,
                                                                         current_semester_student_json_list)
         return finished_older_student_json_list
 
     def get_unfinished_older_student(self, last_semester_student_json_list, current_semester_student_json_list):
-        input_data_is_valid(last_semester_student_json_list, current_semester_student_json_list)
         finished_older_student_json_list = get_intersection_of_two_list(last_semester_student_json_list,
                                                                         current_semester_student_json_list)
         unfinished_older_student_json_list = get_diff_of_two_list(last_semester_student_json_list,
@@ -30,12 +28,10 @@ class StudentList:
         return unfinished_older_student_json_list
 
     def get_new_student(self, last_semester_student_json_list, current_semester_student_json_list):
-        input_data_is_valid(last_semester_student_json_list, current_semester_student_json_list)
         new_student_list = get_diff_of_two_list(current_semester_student_json_list, last_semester_student_json_list)
         return new_student_list
 
     def get_all_unfinished_student(self, last_semester_student_json_list, current_semester_student_json_list):
-
         unfinished_older_student_json_list = self.get_unfinished_older_student(last_semester_student_json_list,
                                                                                current_semester_student_json_list)
         new_student_json_list = self.get_new_student(last_semester_student_json_list,
@@ -48,3 +44,4 @@ class StudentList:
     def set_final_result(self, last_semester_student_json_list, current_semester_student_json_list):
         self.final_result = self.get_all_unfinished_student(last_semester_student_json_list,
                                                             current_semester_student_json_list)
+
