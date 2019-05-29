@@ -2,7 +2,6 @@
 from util import get_intersection_of_two_list
 from util import get_diff_of_two_list
 from util import trans_json_list_to_dict_list
-from util import input_data_is_valid
 
 
 class StudentList:

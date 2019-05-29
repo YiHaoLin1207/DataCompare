@@ -129,7 +129,6 @@ class Ui_MainWindow(object):
             input_data_list_1, input_data_list_2 = swap(input_data_list_1, input_data_list_2)
         filtered_data_list_1 = filter_student_list_with_dict_key(input_data_list_1)
         filtered_data_list_2 = filter_student_list_with_dict_key(input_data_list_2)
-        print(filtered_data_list_1)
         self.student_list.last_semester_student_json_list = filtered_data_list_1
         dict_list_data = trans_json_list_to_dict_list(filtered_data_list_1)
         self.student_list.last_semester_student_dict_list = dict_list_data
