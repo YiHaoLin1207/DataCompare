@@ -46,6 +46,5 @@ class StudentList:
         return all_unfinished_student_dict_list
 
     def set_final_result(self, last_semester_student_json_list, current_semester_student_json_list):
-
         self.final_result = self.get_all_unfinished_student(last_semester_student_json_list,
                                                             current_semester_student_json_list)

@@ -24,7 +24,8 @@ def trans_json_list_to_dict_list(json_list_data):
 def get_intersection_of_two_list(list_a, list_b):
     if not list_a or not list_b:
         return []
-    list_a, list_b = make_len_of_list_a_over_list_b(list_a, list_b)
+    if list_a < list_b:
+        list_a, list_b = swap(list_a, list_b)
     intersection = list(set(list_a) & set(list_b))
     intersection = [x for x in list_b if x in intersection]
     return intersection
@@ -38,7 +39,7 @@ def get_diff_of_two_list(list_a, list_b):
 
 def input_data_is_valid(last_semester_student_json_list, current_semester_student_json_list):
     if last_semester_student_json_list:
-        if len(last_semester_student_json_list) < len(current_semester_student_json_list):
+        if last_semester_student_json_list < current_semester_student_json_list:
             raise ValueError("len(last_semester_student_json_list) should larger than"
                              " len(current_semester_student_json_list)")
     elif not last_semester_student_json_list:
