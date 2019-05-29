@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from model import StudentList
@@ -19,6 +20,9 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.startBtn = QtWidgets.QPushButton(self.centralwidget)
         self.startBtn.setGeometry(QtCore.QRect(610, 490, 161, 41))
+        self.startBtn.clicked.connect(lambda: self.student_list.set_final_result(
+                                                                self.student_list.last_semester_student_json_list,
+                                                                self.student_list.current_semester_student_json_list))
         self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.final_result))
         font = QtGui.QFont()
         font.setFamily("Eras Medium ITC")
@@ -28,7 +32,6 @@ class Ui_MainWindow(object):
         self.startBtn.setFont(font)
         self.startBtn.setFocusPolicy(QtCore.Qt.NoFocus)
         self.startBtn.setObjectName("startBtn")
-        self.startBtn.clicked.connect(self.student_list.set_final_result)
         self.MatchedResultTable = QtWidgets.QTableWidget(self.centralwidget)
         self.MatchedResultTable.setGeometry(QtCore.QRect(30, 20, 741, 441))
         self.MatchedResultTable.setObjectName("MatchedResultTable")
@@ -120,27 +123,36 @@ class Ui_MainWindow(object):
         dict_list_data = trans_json_list_to_dict_list(json_list_data)
         self.student_list.current_semester_student_dict_list = dict_list_data
 
-    def set_widget_table_row_and_column(self, data):
+    def get_row_and_column_number(self, data):
+        if not data:
+            return 1, 1
         row_count = len(data) + 1  # one more for title
         column_count = len(data[0])
+        return row_count, column_count
+
+    def set_widget_table_row_and_column(self, data):
+        row_count, column_count = self.get_row_and_column_number(data)
         self.MatchedResultTable.setRowCount(row_count)
         self.MatchedResultTable.setColumnCount(column_count)
 
     def show_result(self, data):
         self.set_widget_table_row_and_column(data)
-        title_list = list(data[0].keys())
-        for row_no in range(self.MatchedResultTable.rowCount()):
-            for column_no in range(self.MatchedResultTable.columnCount()):
-                if row_no == 0:
-                    column_title = title_list[column_no]
-                    self.MatchedResultTable.setItem(row_no,
-                                                    column_no,
-                                                    QtWidgets.QTableWidgetItem(column_title))
-                else:
-                    data_value = str(list(data[row_no - 1].values())[column_no])
-                    self.MatchedResultTable.setItem(row_no,
-                                                    column_no,
-                                                    QtWidgets.QTableWidgetItem(data_value))
+        if data:
+            title_list = list(data[0].keys())
+            for row_no in range(self.MatchedResultTable.rowCount()):
+                for column_no in range(self.MatchedResultTable.columnCount()):
+                    if row_no == 0:
+                        column_title = title_list[column_no]
+                        self.MatchedResultTable.setItem(row_no,
+                                                        column_no,
+                                                        QtWidgets.QTableWidgetItem(column_title))
+                    else:
+                        data_value = str(list(data[row_no - 1].values())[column_no])
+                        self.MatchedResultTable.setItem(row_no,
+                                                        column_no,
+                                                        QtWidgets.QTableWidgetItem(data_value))
+        else:
+            self.MatchedResultTable.setItem(0, 0, QtWidgets.QTableWidgetItem("兩筆資料完全相符"))
 
     def refresh_line_edit(self, line_edit, file_name):
         line_edit.setText(file_name)
