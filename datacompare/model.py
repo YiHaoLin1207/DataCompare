@@ -44,3 +44,54 @@ class StudentList:
         self.final_result = self.get_all_unfinished_student(last_semester_student_json_list,
                                                             current_semester_student_json_list)
 
+
+class FilterBase(object):
+    def __init__(self):
+        self.dvs_id = False
+        self.dgr_id = False
+        self.unt_id = False
+        self.cls_id = False
+        self.yms_year = False
+        self.yms_sms = False
+        self.cls_id = False
+        self.cls_name_abr = False
+        self.std_id = False
+        self.std_name = False
+        self.std_idno = False
+        self.src_status = False
+        self.kind_id = False
+        self.kind_name = False
+        self.std_key = False
+        self.src_flag = False
+        self.m1 = False
+        self.m2 = False
+        self.m3 = False
+        self.s1 = False
+        self.s2 = False
+        self.s3 = False
+        self.status1 = False
+        self.status2 = False
+        self.pass_yn = False
+        self.src_kind = False
+        self.s4 = False
+        self.std_sex = False
+        self.std_mobile = False
+        self.std_tel = False
+
+
+class CompareFilter:
+    def __init__(self):
+        super(CompareFilter, self).__init__()
+        self.std_idno = True
+
+
+class ResultFilter:
+    def __init__(self):
+        super(ResultFilter, self).__init__()
+        self.std_name = True
+        self.std_idno = True
+        self.std_mobile = True
+        self.std_tel = True
+
+
+

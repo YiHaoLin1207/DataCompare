@@ -20,8 +20,8 @@
    <widget class="QPushButton" name="startBtn">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>490</y>
+      <x>570</x>
+      <y>510</y>
       <width>161</width>
       <height>41</height>
      </rect>
@@ -46,8 +46,8 @@
      <rect>
       <x>30</x>
       <y>20</y>
-      <width>741</width>
-      <height>441</height>
+      <width>471</width>
+      <height>461</height>
      </rect>
     </property>
    </widget>
@@ -65,8 +65,8 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>480</y>
-      <width>561</width>
+      <y>490</y>
+      <width>471</width>
       <height>80</height>
      </rect>
     </property>
@@ -81,7 +81,7 @@
       <rect>
        <x>0</x>
        <y>40</y>
-       <width>551</width>
+       <width>471</width>
        <height>31</height>
       </rect>
      </property>
@@ -108,12 +108,12 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>10</y>
-       <width>551</width>
+       <width>471</width>
        <height>31</height>
       </rect>
      </property>
@@ -135,6 +135,452 @@
        <widget class="QPushButton" name="FileOneBrowseBtn">
         <property name="text">
          <string>瀏覽...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>20</y>
+      <width>281</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="layoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>240</y>
+       <width>261</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="result_condition">
+        <property name="text">
+         <string>結果條件篩選</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="result_cls_id">
+        <property name="text">
+         <string>cls_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="result_s1">
+        <property name="text">
+         <string>s1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="result_std_idno">
+        <property name="text">
+         <string>std_idno</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="result_cls_name_abr">
+        <property name="text">
+         <string>cls_name_abr</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="result_s2">
+        <property name="text">
+         <string>s2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="result_std_key">
+        <property name="text">
+         <string>std_key</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="result_dgr_id">
+        <property name="text">
+         <string>dgr_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="result_s3">
+        <property name="text">
+         <string>s3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="result_std_mobile">
+        <property name="text">
+         <string>std_mobile</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="result_dvs_id">
+        <property name="text">
+         <string>dvs_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="result_s4">
+        <property name="text">
+         <string>s4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QCheckBox" name="result_std_name">
+        <property name="text">
+         <string>std_name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="result_kind_id">
+        <property name="text">
+         <string>kind_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="result_status1">
+        <property name="text">
+         <string>status1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QCheckBox" name="result_std_sex">
+        <property name="text">
+         <string>std_sex</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="result_kind_name">
+        <property name="text">
+         <string>kind_name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QCheckBox" name="result_status2">
+        <property name="text">
+         <string>status2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QCheckBox" name="result_std_tel">
+        <property name="text">
+         <string>std_tel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QCheckBox" name="result_m1">
+        <property name="text">
+         <string>m1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QCheckBox" name="result_src_flag">
+        <property name="text">
+         <string>src_flag</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QCheckBox" name="result_unt_id">
+        <property name="text">
+         <string>unt_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="result_m2">
+        <property name="text">
+         <string>m2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QCheckBox" name="result_src_kind">
+        <property name="text">
+         <string>src_kind</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QCheckBox" name="result_yms_sms">
+        <property name="text">
+         <string>yms_sms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QCheckBox" name="result_m3">
+        <property name="text">
+         <string>m3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QCheckBox" name="result_src_status">
+        <property name="text">
+         <string>src_status</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QCheckBox" name="result_pass_yn">
+        <property name="text">
+         <string>pass_yn</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QCheckBox" name="result_std_id">
+        <property name="text">
+         <string>std_id</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>261</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="select_condition">
+        <property name="text">
+         <string>比對條件篩選</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="compare_cls_id">
+        <property name="text">
+         <string>cls_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="compare_s1">
+        <property name="text">
+         <string>s1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="compare_std_idno">
+        <property name="text">
+         <string>std_idno</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="compare_cls_name_abr">
+        <property name="text">
+         <string>cls_name_abr</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="compare_s2">
+        <property name="text">
+         <string>s2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="compare_std_key">
+        <property name="text">
+         <string>std_key</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="compare_dgr_id">
+        <property name="text">
+         <string>dgr_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="compare_s3">
+        <property name="text">
+         <string>s3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="compare_std_mobile">
+        <property name="text">
+         <string>std_mobile</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="compare_dvs_id">
+        <property name="text">
+         <string>dvs_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="compare_s4">
+        <property name="text">
+         <string>s4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QCheckBox" name="compare_std_name">
+        <property name="text">
+         <string>std_name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="compare_kind_id">
+        <property name="text">
+         <string>kind_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="compare_status1">
+        <property name="text">
+         <string>status1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QCheckBox" name="compare_std_sex">
+        <property name="text">
+         <string>std_sex</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="compare_kind_name">
+        <property name="text">
+         <string>kind_name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QCheckBox" name="compare_status2">
+        <property name="text">
+         <string>status2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QCheckBox" name="compare_std_tel">
+        <property name="text">
+         <string>std_tel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QCheckBox" name="compare_m1">
+        <property name="text">
+         <string>m1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QCheckBox" name="compare_src_flag">
+        <property name="text">
+         <string>src_flag</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QCheckBox" name="compare_unt_id">
+        <property name="text">
+         <string>unt_id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="compare_m2">
+        <property name="text">
+         <string>m2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QCheckBox" name="compare_src_kind">
+        <property name="text">
+         <string>src_kind</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QCheckBox" name="compare_yms_sms">
+        <property name="text">
+         <string>yms_sms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QCheckBox" name="compare_m3">
+        <property name="text">
+         <string>m3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QCheckBox" name="compare_src_status">
+        <property name="text">
+         <string>src_status</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QCheckBox" name="compare_pass_yn">
+        <property name="text">
+         <string>pass_yn</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QCheckBox" name="compare_std_id">
+        <property name="text">
+         <string>std_id</string>
         </property>
        </widget>
       </item>
