@@ -9,6 +9,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from model import StudentList
+from model import CompareFilter
+from model import ResultFilter
 from util import load_txt_file_to_json_list
 from util import trans_json_list_to_dict_list
 from util import filter_student_list_with_dict_key
@@ -18,6 +20,8 @@ from util import swap
 class Ui_MainWindow(object):
     def __init__(self):
         self.student_list = StudentList()
+        self.compare_filter = CompareFilter()
+        self.result_filter = ResultFilter()
         self.input_data_list_1 = []
         self.input_data_list_2 = []
 
@@ -119,6 +123,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.result_s1, 1, 1, 1, 1)
         self.result_std_idno = QtWidgets.QCheckBox(self.layoutWidget_2)
         self.result_std_idno.setObjectName("result_std_idno")
+        self.result_std_idno.stateChanged.connect(self.result_filter.std_idno)
         self.gridLayout_2.addWidget(self.result_std_idno, 1, 2, 1, 1)
         self.result_cls_name_abr = QtWidgets.QCheckBox(self.layoutWidget_2)
         self.result_cls_name_abr.setObjectName("result_cls_name_abr")
