@@ -41,12 +41,12 @@ class Ui_MainWindow(object):
         self.startBtn.setFocusPolicy(QtCore.Qt.NoFocus)
         self.startBtn.setObjectName("startBtn")
         self.startBtn.clicked.connect(lambda: self.student_list.set_semester_list(self.input_data_1,
-                                                                                  self.input_data_2,
-                                                                                  ['std_name', 'std_idno']))
+                                                                                  self.input_data_2))
         self.startBtn.clicked.connect(lambda: self.student_list.set_compared_result(
             self.student_list.last_semester_student_dict_list,
-            self.student_list.current_semester_student_dict_list))
-        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.compared_result))
+            self.student_list.current_semester_student_dict_list,
+            ['std_idno', 'std_name', 'cls_name_abr', 'std_mobile', 'std_tel']))
+        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_compared_result))
 
         self.MatchedResultTable = QtWidgets.QTableWidget(self.centralwidget)
         self.MatchedResultTable.setGeometry(QtCore.QRect(30, 20, 471, 461))

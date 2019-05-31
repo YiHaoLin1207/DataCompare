@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore
-from util import get_intersection_of_two_list
-from util import get_diff_of_two_list
 from util import swap
 from util import filter_student_list_with_dict_key
 import json
@@ -13,12 +11,14 @@ class StudentList:
         self.last_semester_student_dict_list = []
         self.current_semester_student_dict_list = []
         self.compared_result = []
+        self.filtered_compared_result = []
 
-    def set_compared_result(self, last_semester_student_dict_list, current_semester_student_dict_list):
+    def set_compared_result(self, last_semester_student_dict_list, current_semester_student_dict_list, filter_list):
         self.compared_result = self.get_all_unfinished_student(last_semester_student_dict_list,
                                                                current_semester_student_dict_list)
+        self.filtered_compared_result = filter_student_list_with_dict_key(self.compared_result, filter_list)
 
-    def set_semester_list(self, input_data_1, input_data_2, filter_list):
+    def set_semester_list(self, input_data_1, input_data_2):
         # Note: input_data_1 < input_data_2 may cause some problem
         if json.dumps(input_data_1) < json.dumps(input_data_2):
             input_data_1, input_data_2 = swap(input_data_1, input_data_2)
@@ -26,32 +26,45 @@ class StudentList:
         if input_data_1 and input_data_2:
             input_data_1 = self.remove_graduated_student(input_data_1)
 
-        filtered_data_list_1 = filter_student_list_with_dict_key(input_data_1, filter_list)
-        filtered_data_list_2 = filter_student_list_with_dict_key(input_data_2, filter_list)
-        self.last_semester_student_dict_list = filtered_data_list_1
-        self.current_semester_student_dict_list = filtered_data_list_2
+        self.last_semester_student_dict_list = input_data_1
+        self.current_semester_student_dict_list = input_data_2
 
-    def get_finished_older_student(self, last_semester_student_dict_list, current_semester_student_dict_list):
-        finished_older_student_dict_list = get_intersection_of_two_list(last_semester_student_dict_list,
-                                                                        current_semester_student_dict_list)
+    def get_finished_older_students(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        finished_older_student_dict_list = []
+        for l_student in last_semester_student_dict_list:
+            for index, c_student in enumerate(current_semester_student_dict_list):
+                if l_student['std_idno'] == c_student['std_idno']:
+                    finished_older_student_dict_list.append(c_student)
+                    current_semester_student_dict_list.pop(index)
         return finished_older_student_dict_list
 
-    def get_unfinished_older_student(self, last_semester_student_dict_list, current_semester_student_dict_list):
-        finished_older_student_dict_list = get_intersection_of_two_list(last_semester_student_dict_list,
-                                                                        current_semester_student_dict_list)
-        unfinished_older_student_dict_list = get_diff_of_two_list(last_semester_student_dict_list,
-                                                                  finished_older_student_dict_list)
+    def get_unfinished_older_students(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        finished_older_student_dict_list = self.get_finished_older_students(last_semester_student_dict_list,
+                                                                            current_semester_student_dict_list)
+        for f_student in finished_older_student_dict_list:
+            for l_index, l_student in enumerate(last_semester_student_dict_list):
+                if f_student['std_idno'] == l_student['std_idno']:
+                    last_semester_student_dict_list.pop(l_index)
+        unfinished_older_student_dict_list = last_semester_student_dict_list
+
         return unfinished_older_student_dict_list
 
-    def get_new_student(self, last_semester_student_dict_list, current_semester_student_dict_list):
-        new_student_list = get_diff_of_two_list(current_semester_student_dict_list, last_semester_student_dict_list)
-        return new_student_list
+    def get_new_students(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        finished_older_student_dict_list = self.get_finished_older_students(last_semester_student_dict_list,
+                                                                            current_semester_student_dict_list)
+        for f_student in finished_older_student_dict_list:
+            for c_index, c_student in enumerate(current_semester_student_dict_list):
+                if f_student['std_idno'] == c_student['std_idno']:
+                    current_semester_student_dict_list.pop(c_index)
+        new_student_dict_list = current_semester_student_dict_list
+
+        return new_student_dict_list
 
     def get_all_unfinished_student(self, last_semester_student_dict_list, current_semester_student_dict_list):
-        unfinished_older_student_dict_list = self.get_unfinished_older_student(last_semester_student_dict_list,
-                                                                               current_semester_student_dict_list)
-        new_student_dict_list = self.get_new_student(last_semester_student_dict_list,
-                                                     current_semester_student_dict_list)
+        unfinished_older_student_dict_list = self.get_unfinished_older_students(last_semester_student_dict_list,
+                                                                                current_semester_student_dict_list)
+        new_student_dict_list = self.get_new_students(last_semester_student_dict_list,
+                                                      current_semester_student_dict_list)
         all_unfinished_student_dict_list = unfinished_older_student_dict_list + new_student_dict_list
 
         return all_unfinished_student_dict_list

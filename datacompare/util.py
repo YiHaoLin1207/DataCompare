@@ -31,6 +31,7 @@ def trans_json_list_to_dict_list(json_list_data):
     return dict_list_data
 
 
+# useless now
 def get_intersection_of_two_list(list_a, list_b):
     if not list_a or not list_b:
         return []
@@ -42,6 +43,7 @@ def get_intersection_of_two_list(list_a, list_b):
     return intersection
 
 
+# useless now
 def get_diff_of_two_list(list_a, list_b):
     if not list_a and not list_b:
         return []
@@ -53,6 +55,7 @@ def get_diff_of_two_list(list_a, list_b):
     return diff
 
 
+# useless now
 def filter_student_list_with_dict_key(dict_list, filter_list):
     new_dict_list = []
     for d in dict_list:
