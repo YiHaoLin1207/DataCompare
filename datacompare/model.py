@@ -2,6 +2,7 @@
 from PyQt5 import QtCore
 from util import swap
 from util import filter_student_list_with_dict_key
+from copy import deepcopy
 import json
 
 
@@ -30,6 +31,8 @@ class StudentList:
         self.current_semester_student_dict_list = input_data_2
 
     def get_finished_older_students(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        last_semester_student_dict_list = deepcopy(last_semester_student_dict_list)
+        current_semester_student_dict_list = deepcopy(current_semester_student_dict_list)
         finished_older_student_dict_list = []
         for l_student in last_semester_student_dict_list:
             for index, c_student in enumerate(current_semester_student_dict_list):
@@ -39,6 +42,8 @@ class StudentList:
         return finished_older_student_dict_list
 
     def get_unfinished_older_students(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        last_semester_student_dict_list = deepcopy(last_semester_student_dict_list)
+        current_semester_student_dict_list = deepcopy(current_semester_student_dict_list)
         finished_older_student_dict_list = self.get_finished_older_students(last_semester_student_dict_list,
                                                                             current_semester_student_dict_list)
         for f_student in finished_older_student_dict_list:
@@ -50,6 +55,8 @@ class StudentList:
         return unfinished_older_student_dict_list
 
     def get_new_students(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        last_semester_student_dict_list = deepcopy(last_semester_student_dict_list)
+        current_semester_student_dict_list = deepcopy(current_semester_student_dict_list)
         finished_older_student_dict_list = self.get_finished_older_students(last_semester_student_dict_list,
                                                                             current_semester_student_dict_list)
         for f_student in finished_older_student_dict_list:

@@ -10,6 +10,7 @@ def swap(list_a, list_b):
     return list_a, list_b
 
 
+# useless now
 def trans_dict_list_to_json_list(dict_list_data):
     if not dict_list_data:
         return []
@@ -19,6 +20,7 @@ def trans_dict_list_to_json_list(dict_list_data):
     return json_list_data
 
 
+# useless now
 def trans_json_list_to_dict_list(json_list_data):
     if not json_list_data:
         return []
