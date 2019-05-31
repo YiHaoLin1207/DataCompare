@@ -2,6 +2,9 @@
 from PyQt5 import QtCore
 from util import get_intersection_of_two_list
 from util import get_diff_of_two_list
+from util import swap
+from util import filter_student_list_with_dict_key
+import json
 
 
 class StudentList:
@@ -9,7 +12,24 @@ class StudentList:
     def __init__(self):
         self.last_semester_student_dict_list = []
         self.current_semester_student_dict_list = []
-        self.final_result = []
+        self.compared_result = []
+
+    def set_compared_result(self, last_semester_student_dict_list, current_semester_student_dict_list):
+        self.compared_result = self.get_all_unfinished_student(last_semester_student_dict_list,
+                                                               current_semester_student_dict_list)
+
+    def set_semester_list(self, input_data_1, input_data_2, filter_list):
+        # Note: input_data_1 < input_data_2 may cause some problem
+        if json.dumps(input_data_1) < json.dumps(input_data_2):
+            input_data_1, input_data_2 = swap(input_data_1, input_data_2)
+
+        if input_data_1 and input_data_2:
+            input_data_1 = self.remove_graduated_student(input_data_1)
+
+        filtered_data_list_1 = filter_student_list_with_dict_key(input_data_1, filter_list)
+        filtered_data_list_2 = filter_student_list_with_dict_key(input_data_2, filter_list)
+        self.last_semester_student_dict_list = filtered_data_list_1
+        self.current_semester_student_dict_list = filtered_data_list_2
 
     def get_finished_older_student(self, last_semester_student_dict_list, current_semester_student_dict_list):
         finished_older_student_dict_list = get_intersection_of_two_list(last_semester_student_dict_list,
@@ -36,9 +56,16 @@ class StudentList:
 
         return all_unfinished_student_dict_list
 
-    def set_compared_result(self, last_semester_student_dict_list, current_semester_student_dict_list):
-        self.final_result = self.get_all_unfinished_student(last_semester_student_dict_list,
-                                                            current_semester_student_dict_list)
+    def remove_graduated_student(self, studemt_dict_list):
+        remained_result = []
+        for dict_data in studemt_dict_list:
+            if dict_data['cls_name_abr'][1:3] == '五專' and dict_data['cls_name_abr'][-2] != '五':
+                remained_result.append(dict_data)
+            elif dict_data['cls_name_abr'][1:3] == '四技' and dict_data['cls_name_abr'][-2] != '四':
+                remained_result.append(dict_data)
+            elif (dict_data['cls_name_abr'][-4] == '碩' or dict_data['cls_name_abr'][-3] == '碩') and dict_data['cls_name_abr'][-2] != '二':
+                remained_result.append(dict_data)
+        return remained_result
 
 
 class BaseFilter(object):

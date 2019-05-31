@@ -34,8 +34,6 @@ def trans_json_list_to_dict_list(json_list_data):
 def get_intersection_of_two_list(list_a, list_b):
     if not list_a or not list_b:
         return []
-    if list_a < list_b:
-        list_a, list_b = swap(list_a, list_b)
     list_a = trans_dict_list_to_json_list(list_a)
     list_b = trans_dict_list_to_json_list(list_b)
     intersection = list(set(list_a) & set(list_b))
@@ -55,10 +53,10 @@ def get_diff_of_two_list(list_a, list_b):
     return diff
 
 
-def filter_student_list_with_dict_key(dict_list):
+def filter_student_list_with_dict_key(dict_list, filter_list):
     new_dict_list = []
     for d in dict_list:
-        new_dict = {k: v for k, v in d.items() if k in ['std_name', 'std_idno']}
+        new_dict = {k: v for k, v in d.items() if k in filter_list}
         new_dict_list.append(new_dict)
     return new_dict_list
 
@@ -82,5 +80,6 @@ def load_txt_file_as_dict_list(file_path):
             dict_list.append(dict_data)
     file.close()
     return dict_list
+
 
 

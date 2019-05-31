@@ -12,8 +12,6 @@ from model import StudentList
 from model import CompareFilter
 from model import ResultFilter
 from util import load_txt_file_as_dict_list
-from util import filter_student_list_with_dict_key
-from util import swap
 
 
 class Ui_MainWindow(object):
@@ -42,11 +40,13 @@ class Ui_MainWindow(object):
         self.startBtn.setFont(font)
         self.startBtn.setFocusPolicy(QtCore.Qt.NoFocus)
         self.startBtn.setObjectName("startBtn")
-        self.startBtn.clicked.connect(lambda: self.set_semester_list(self.input_data_1, self.input_data_2))
+        self.startBtn.clicked.connect(lambda: self.student_list.set_semester_list(self.input_data_1,
+                                                                                  self.input_data_2,
+                                                                                  ['std_name', 'std_idno']))
         self.startBtn.clicked.connect(lambda: self.student_list.set_compared_result(
             self.student_list.last_semester_student_dict_list,
             self.student_list.current_semester_student_dict_list))
-        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.final_result))
+        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.compared_result))
 
         self.MatchedResultTable = QtWidgets.QTableWidget(self.centralwidget)
         self.MatchedResultTable.setGeometry(QtCore.QRect(30, 20, 471, 461))
@@ -390,17 +390,6 @@ class Ui_MainWindow(object):
         file_name = self.get_file_name_from_browse_slot(self.lineEdit_2)
         dict_list_data = load_txt_file_as_dict_list(file_name)
         self.input_data_2 = dict_list_data
-
-    def set_semester_list(self, input_data_1, input_data_2):
-        # Note: input_data_1 < input_data_2 may cause some problem
-        if input_data_1 < input_data_2:
-            input_data_1, input_data_2 = swap(input_data_1, input_data_2)
-
-        filtered_data_list_1 = filter_student_list_with_dict_key(input_data_1)
-        filtered_data_list_2 = filter_student_list_with_dict_key(input_data_2)
-        self.student_list.last_semester_student_dict_list = filtered_data_list_1
-        self.student_list.current_semester_student_dict_list = filtered_data_list_2
-        print(self.student_list)
 
     def get_row_and_column_number(self, data):
         if not data:
