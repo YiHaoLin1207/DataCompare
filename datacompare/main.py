@@ -11,8 +11,7 @@ import sys
 from model import StudentList
 from model import CompareFilter
 from model import ResultFilter
-from util import load_txt_file_to_json_list
-from util import trans_json_list_to_dict_list
+from util import load_txt_file_as_dict_list
 from util import filter_student_list_with_dict_key
 from util import swap
 
@@ -22,8 +21,8 @@ class Ui_MainWindow(object):
         self.student_list = StudentList()
         self.compare_filter = CompareFilter()
         self.result_filter = ResultFilter()
-        self.input_data_list_1 = []
-        self.input_data_list_2 = []
+        self.input_data_1 = []
+        self.input_data_2 = []
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -43,10 +42,10 @@ class Ui_MainWindow(object):
         self.startBtn.setFont(font)
         self.startBtn.setFocusPolicy(QtCore.Qt.NoFocus)
         self.startBtn.setObjectName("startBtn")
-        self.startBtn.clicked.connect(lambda: self.set_semester_list(self.input_data_list_1, self.input_data_list_2))
-        self.startBtn.clicked.connect(lambda: self.student_list.set_final_result(
-            self.student_list.last_semester_student_json_list,
-            self.student_list.current_semester_student_json_list))
+        self.startBtn.clicked.connect(lambda: self.set_semester_list(self.input_data_1, self.input_data_2))
+        self.startBtn.clicked.connect(lambda: self.student_list.set_compared_result(
+            self.student_list.last_semester_student_dict_list,
+            self.student_list.current_semester_student_dict_list))
         self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.final_result))
 
         self.MatchedResultTable = QtWidgets.QTableWidget(self.centralwidget)
@@ -80,7 +79,7 @@ class Ui_MainWindow(object):
 
         self.FileTwoBrowseBtn = QtWidgets.QPushButton(self.layoutWidget)
         self.FileTwoBrowseBtn.setObjectName("FileTwoBrowseBtn")
-        self.FileTwoBrowseBtn.clicked.connect(self.set_input_data_list_2)
+        self.FileTwoBrowseBtn.clicked.connect(self.set_input_data_2)
         self.horizontalLayout_3.addWidget(self.FileTwoBrowseBtn)
         self.layoutWidget1 = QtWidgets.QWidget(self.frame)
         self.layoutWidget1.setGeometry(QtCore.QRect(0, 10, 471, 31))
@@ -99,7 +98,7 @@ class Ui_MainWindow(object):
 
         self.FileOneBrowseBtn = QtWidgets.QPushButton(self.layoutWidget1)
         self.FileOneBrowseBtn.setObjectName("FileOneBrowseBtn")
-        self.FileOneBrowseBtn.clicked.connect(self.set_input_data_list_1)
+        self.FileOneBrowseBtn.clicked.connect(self.set_input_data_1)
         self.horizontalLayout_2.addWidget(self.FileOneBrowseBtn)
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setGeometry(QtCore.QRect(510, 20, 281, 461))
@@ -123,7 +122,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.result_s1, 1, 1, 1, 1)
         self.result_std_idno = QtWidgets.QCheckBox(self.layoutWidget_2)
         self.result_std_idno.setObjectName("result_std_idno")
-        self.result_std_idno.stateChanged.connect(self.result_filter.std_idno)
+        self.result_std_idno.setCheckState(self.result_filter.std_idno)
+        self.result_std_idno.stateChanged.connect(self.set_result_std_idno)
         self.gridLayout_2.addWidget(self.result_std_idno, 1, 2, 1, 1)
         self.result_cls_name_abr = QtWidgets.QCheckBox(self.layoutWidget_2)
         self.result_cls_name_abr.setObjectName("result_cls_name_abr")
@@ -381,28 +381,26 @@ class Ui_MainWindow(object):
         self.refresh_line_edit(line_edit, file_name)
         return file_name
 
-    def set_input_data_list_1(self):
+    def set_input_data_1(self):
         file_name = self.get_file_name_from_browse_slot(self.lineEdit)
-        json_list_data = load_txt_file_to_json_list(file_name)
-        self.input_data_list_1 = json_list_data
-        print(self.input_data_list_1)
+        dict_list_data = load_txt_file_as_dict_list(file_name)
+        self.input_data_1 = dict_list_data
 
-    def set_input_data_list_2(self):
+    def set_input_data_2(self):
         file_name = self.get_file_name_from_browse_slot(self.lineEdit_2)
-        json_list_data = load_txt_file_to_json_list(file_name)
-        self.input_data_list_2 = json_list_data
+        dict_list_data = load_txt_file_as_dict_list(file_name)
+        self.input_data_2 = dict_list_data
 
-    def set_semester_list(self, input_data_list_1, input_data_list_2):
-        if input_data_list_1 < input_data_list_2:
-            input_data_list_1, input_data_list_2 = swap(input_data_list_1, input_data_list_2)
-        filtered_data_list_1 = filter_student_list_with_dict_key(input_data_list_1)
-        filtered_data_list_2 = filter_student_list_with_dict_key(input_data_list_2)
-        self.student_list.last_semester_student_json_list = filtered_data_list_1
-        dict_list_data = trans_json_list_to_dict_list(filtered_data_list_1)
-        self.student_list.last_semester_student_dict_list = dict_list_data
-        self.student_list.current_semester_student_json_list = filtered_data_list_2
-        dict_list_data_2 = trans_json_list_to_dict_list(input_data_list_2)
-        self.student_list.current_semester_student_dict_list = dict_list_data_2
+    def set_semester_list(self, input_data_1, input_data_2):
+        # Note: input_data_1 < input_data_2 may cause some problem
+        if input_data_1 < input_data_2:
+            input_data_1, input_data_2 = swap(input_data_1, input_data_2)
+
+        filtered_data_list_1 = filter_student_list_with_dict_key(input_data_1)
+        filtered_data_list_2 = filter_student_list_with_dict_key(input_data_2)
+        self.student_list.last_semester_student_dict_list = filtered_data_list_1
+        self.student_list.current_semester_student_dict_list = filtered_data_list_2
+        print(self.student_list)
 
     def get_row_and_column_number(self, data):
         if not data:
@@ -415,6 +413,13 @@ class Ui_MainWindow(object):
         row_count, column_count = self.get_row_and_column_number(data)
         self.MatchedResultTable.setRowCount(row_count)
         self.MatchedResultTable.setColumnCount(column_count)
+
+    def set_result_std_idno(self, state):
+
+        if state == QtCore.Qt.Checked:
+            self.result_filter.std_idno = QtCore.Qt.Checked
+        else:
+            self.result_filter.std_idno = QtCore.Qt.Unchecked
 
     def show_result(self, data):
         self.set_widget_table_row_and_column(data)
