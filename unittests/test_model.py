@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datacompare.model import StudentList
+from datacompare.student import StudentList
 import json
 import unittest
 

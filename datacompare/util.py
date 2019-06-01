@@ -34,25 +34,25 @@ def trans_json_list_to_dict_list(json_list_data):
 
 
 # useless now
-def get_intersection_of_two_list(list_a, list_b):
-    if not list_a or not list_b:
+def get_intersection_of_two_list(dict_list_a, dict_list_b):
+    if not dict_list_a or not dict_list_b:
         return []
-    list_a = trans_dict_list_to_json_list(list_a)
-    list_b = trans_dict_list_to_json_list(list_b)
-    intersection = list(set(list_a) & set(list_b))
-    intersection = [x for x in list_b if x in intersection]
+    dict_list_a = trans_dict_list_to_json_list(dict_list_a)
+    dict_list_b = trans_dict_list_to_json_list(dict_list_b)
+    intersection = list(set(dict_list_a) & set(dict_list_b))
+    intersection = [x for x in dict_list_b if x in intersection]
     intersection = trans_json_list_to_dict_list(intersection)
     return intersection
 
 
 # useless now
-def get_diff_of_two_list(list_a, list_b):
-    if not list_a and not list_b:
+def get_diff_of_two_list(dict_list_a, dict_list_b):
+    if not dict_list_a and not dict_list_b:
         return []
-    list_a = trans_dict_list_to_json_list(list_a)
-    list_b = trans_dict_list_to_json_list(list_b)
-    diff = list(set(list_a) - set(list_b))
-    diff = [x for x in list_a if x in diff]
+    dict_list_a = trans_dict_list_to_json_list(dict_list_a)
+    dict_list_b = trans_dict_list_to_json_list(dict_list_b)
+    diff = list(set(dict_list_a) - set(dict_list_b))
+    diff = [x for x in dict_list_a if x in diff]
     diff = trans_json_list_to_dict_list(diff)
     return diff
 
