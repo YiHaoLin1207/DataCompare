@@ -50,7 +50,7 @@ class BaseFilter(object):
             self.unt_id = QtCore.Qt.Checked
         else:
             self.unt_id = QtCore.Qt.Unchecked
-            
+
     def set_cls_id(self, state):
         if state == QtCore.Qt.Checked:
             self.cls_id = QtCore.Qt.Checked
@@ -208,12 +208,6 @@ class BaseFilter(object):
             self.std_tel = QtCore.Qt.Unchecked
 
 
-class CompareFilter(BaseFilter):
-    def __init__(self):
-        super(CompareFilter, self).__init__()
-        self.std_idno = QtCore.Qt.Checked
-
-
 class ResultFilter(BaseFilter):
     def __init__(self):
         super(ResultFilter, self).__init__()
@@ -221,3 +215,11 @@ class ResultFilter(BaseFilter):
         self.std_idno = QtCore.Qt.Checked
         self.std_mobile = QtCore.Qt.Checked
         self.std_tel = QtCore.Qt.Checked
+
+    @property
+    def filter_list(self):
+        filter_list = []
+        for key, value in self.__dict__.items():
+            if value == QtCore.Qt.Checked:
+                filter_list.append(key)
+        return filter_list

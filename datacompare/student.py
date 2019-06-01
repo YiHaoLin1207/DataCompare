@@ -23,7 +23,7 @@ class StudentList:
         if json.dumps(input_data_1) < json.dumps(input_data_2):
             input_data_1, input_data_2 = swap(input_data_1, input_data_2)
 
-        if input_data_1 and input_data_2:
+        if (input_data_1 and input_data_2) and json.dumps(input_data_1) != json.dumps(input_data_2):
             input_data_1 = self.remove_graduated_students(input_data_1)
 
         self.last_semester_students = input_data_1

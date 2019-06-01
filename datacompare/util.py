@@ -76,10 +76,10 @@ def load_txt_file_as_dict_list(file_path):
     dict_keys = []
     for line_no, line in enumerate(row_data):
         if line_no == 0:
-            dict_keys = line.strip('\n').split('\t')
+            dict_keys = line.strip('\n').strip('\r').split('\t')
         else:
             dict_data = {}
-            dict_values = line.strip('\n').split('\t')
+            dict_values = line.strip('\n').strip('\r').split('\t')
             for i, dict_key in enumerate(dict_keys):
                 dict_data[dict_key] = dict_values[i]
             dict_list.append(dict_data)
