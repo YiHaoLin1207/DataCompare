@@ -7,11 +7,12 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from customized_main_window import CustomizedMainWindow
 import sys
 from student import StudentList
 from filter import ResultFilter
 from util import load_txt_file_as_dict_list
-from PyQt5.QtCore import Qt
+from util import get_table_content
 
 
 class Ui_MainWindow(object):
@@ -66,7 +67,12 @@ class Ui_MainWindow(object):
         self.HandedResultTable.setObjectName("HandedResultTable")
         self.HandedResultTable.setColumnCount(0)
         self.HandedResultTable.setRowCount(0)
-        
+
+        self.right_click_menu = MainWindow.createContextMenu()
+        self.copy = QtWidgets.QAction('複製')
+        self.copy.triggered.connect(self.copy_selected_content_to_clipboard)
+        self.right_click_menu.addAction(self.copy)
+
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(230, 260, 120, 80))
         self.widget.setObjectName("widget")
@@ -361,6 +367,13 @@ class Ui_MainWindow(object):
         dict_list_data = load_txt_file_as_dict_list(file_name)
         self.input_data_2 = dict_list_data
 
+    def copy_selected_content_to_clipboard(self):
+        unhanded_table_content = get_table_content(self.UnhandedResultTable)
+        handed_table_content = get_table_content(self.HandedResultTable)
+
+        sys_clip = QtWidgets.QApplication.clipboard()
+        sys_clip.setText(unhanded_table_content + handed_table_content)
+
     def get_row_and_column_number(self, data):
         if not data:
             return 1, 1
@@ -382,13 +395,13 @@ class Ui_MainWindow(object):
                     if row_no == 0:
                         column_title = title_list[column_no]
                         table.setItem(row_no,
-                                                        column_no,
-                                                        QtWidgets.QTableWidgetItem(column_title))
+                                      column_no,
+                                      QtWidgets.QTableWidgetItem(column_title))
                     else:
                         data_value = str(list(data[row_no - 1].values())[column_no])
                         table.setItem(row_no,
-                                                        column_no,
-                                                        QtWidgets.QTableWidgetItem(data_value))
+                                      column_no,
+                                      QtWidgets.QTableWidgetItem(data_value))
         else:
             table.setItem(0, 0, QtWidgets.QTableWidgetItem("兩筆資料完全相符"))
 
@@ -397,7 +410,7 @@ class Ui_MainWindow(object):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
+    MainWindow = CustomizedMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
