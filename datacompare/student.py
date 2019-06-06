@@ -10,13 +10,20 @@ class StudentList:
     def __init__(self):
         self.last_semester_students = []
         self.current_semester_students = []
-        self.compared_result = []
-        self.filtered_compared_result = []
+        self.filtered_unhanded_student_result = []
+        self.filtered_handed_student_result = []
 
-    def set_compared_result(self, last_semester_students, current_semester_students, filter_list):
-        self.compared_result = self.get_all_unfinished_students(last_semester_students,
-                                                                current_semester_students)
-        self.filtered_compared_result = filter_student_list_with_dict_key(self.compared_result, filter_list)
+    def set_unhanded_student_result(self, last_semester_students, current_semester_students, filter_list):
+        unhanded_student_result = self.get_all_unfinished_students(last_semester_students,
+                                                                   current_semester_students)
+        self.filtered_unhanded_student_result = filter_student_list_with_dict_key(unhanded_student_result,
+                                                                                  filter_list)
+
+    def set_handed_student_result(self, last_semester_students, current_semester_students, filter_list):
+        handed_student_result = self.get_finished_older_students(last_semester_students,
+                                                                 current_semester_students)
+        self.filtered_handed_student_result = filter_student_list_with_dict_key(handed_student_result,
+                                                                                filter_list)
 
     def set_semester_list(self, input_data_1, input_data_2):
         # Note: input_data_1 < input_data_2 may cause some problem
@@ -44,7 +51,7 @@ class StudentList:
         last_semester_students = deepcopy(last_semester_students)
         current_semester_students = deepcopy(current_semester_students)
         finished_older_students = self.get_finished_older_students(last_semester_students,
-                                                                            current_semester_students)
+                                                                   current_semester_students)
         for f_student in finished_older_students:
             for l_index, l_student in enumerate(last_semester_students):
                 if f_student['std_idno'] == l_student['std_idno']:

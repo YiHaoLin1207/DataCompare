@@ -11,6 +11,7 @@ import sys
 from student import StudentList
 from filter import ResultFilter
 from util import load_txt_file_as_dict_list
+from PyQt5.QtCore import Qt
 
 
 class Ui_MainWindow(object):
@@ -40,17 +41,32 @@ class Ui_MainWindow(object):
         self.startBtn.setObjectName("startBtn")
         self.startBtn.clicked.connect(lambda: self.student_list.set_semester_list(self.input_data_1,
                                                                                   self.input_data_2))
-        self.startBtn.clicked.connect(lambda: self.student_list.set_compared_result(
+        self.startBtn.clicked.connect(lambda: self.student_list.set_unhanded_student_result(
             self.student_list.last_semester_students,
             self.student_list.current_semester_students,
             self.result_filter.filter_list))
-        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_compared_result))
+        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_unhanded_student_result,
+                                                               self.UnhandedResultTable))
 
-        self.MatchedResultTable = QtWidgets.QTableWidget(self.centralwidget)
-        self.MatchedResultTable.setGeometry(QtCore.QRect(30, 20, 471, 461))
-        self.MatchedResultTable.setObjectName("MatchedResultTable")
-        self.MatchedResultTable.setColumnCount(0)
-        self.MatchedResultTable.setRowCount(0)
+        self.startBtn.clicked.connect(lambda: self.student_list.set_handed_student_result(
+            self.student_list.last_semester_students,
+            self.student_list.current_semester_students,
+            self.result_filter.filter_list))
+        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_handed_student_result,
+                                                               self.HandedResultTable))
+
+        self.UnhandedResultTable = QtWidgets.QTableWidget(self.centralwidget)
+        self.UnhandedResultTable.setGeometry(QtCore.QRect(30, 35, 235, 455))
+        self.UnhandedResultTable.setObjectName("UnhandedResultTable")
+        self.UnhandedResultTable.setColumnCount(0)
+        self.UnhandedResultTable.setRowCount(0)
+
+        self.HandedResultTable = QtWidgets.QTableWidget(self.centralwidget)
+        self.HandedResultTable.setGeometry(QtCore.QRect(270, 35, 235, 455))
+        self.HandedResultTable.setObjectName("HandedResultTable")
+        self.HandedResultTable.setColumnCount(0)
+        self.HandedResultTable.setRowCount(0)
+        
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(230, 260, 120, 80))
         self.widget.setObjectName("widget")
@@ -113,9 +129,19 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.widget1)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
+
         self.select_condition = QtWidgets.QLabel(self.widget1)
         self.select_condition.setObjectName("select_condition")
         self.gridLayout.addWidget(self.select_condition, 0, 0, 1, 1)
+
+        self.unhanded_student_label = QtWidgets.QLabel(self.centralwidget)
+        self.unhanded_student_label.setGeometry(QtCore.QRect(120, 10, 61, 16))
+        self.unhanded_student_label.setObjectName("unhanded_student_label")
+
+        self.handed_student_label = QtWidgets.QLabel(self.centralwidget)
+        self.handed_student_label.setGeometry(QtCore.QRect(350, 10, 61, 16))
+        self.handed_student_label.setObjectName("handed_student_label")
+
         self.result_cls_id = QtWidgets.QCheckBox(self.widget1)
         self.result_cls_id.setObjectName("result_cls_id")
         self.result_cls_id.setCheckState(self.result_filter.cls_id)
@@ -278,6 +304,9 @@ class Ui_MainWindow(object):
         self.FileOneLabel.setText(_translate("MainWindow", "檔案 1"))
         self.FileOneBrowseBtn.setText(_translate("MainWindow", "瀏覽..."))
 
+        self.unhanded_student_label.setText(_translate("MainWindow", "未繳交學生"))
+        self.handed_student_label.setText(_translate("MainWindow", "已繳交學生"))
+
         self.select_condition.setText(_translate("MainWindow", "結果條件篩選"))
         self.result_cls_id.setText(_translate("MainWindow", "cls_id"))
         self.result_s1.setText(_translate("MainWindow", "s1"))
@@ -339,29 +368,29 @@ class Ui_MainWindow(object):
         column_count = len(data[0])
         return row_count, column_count
 
-    def set_widget_table_row_and_column(self, data):
+    def set_widget_table_row_and_column(self, data, table):
         row_count, column_count = self.get_row_and_column_number(data)
-        self.MatchedResultTable.setRowCount(row_count)
-        self.MatchedResultTable.setColumnCount(column_count)
+        table.setRowCount(row_count)
+        table.setColumnCount(column_count)
 
-    def show_result(self, data):
-        self.set_widget_table_row_and_column(data)
+    def show_result(self, data, table):
+        self.set_widget_table_row_and_column(data, table)
         if data:
             title_list = list(data[0].keys())
-            for row_no in range(self.MatchedResultTable.rowCount()):
-                for column_no in range(self.MatchedResultTable.columnCount()):
+            for row_no in range(table.rowCount()):
+                for column_no in range(table.columnCount()):
                     if row_no == 0:
                         column_title = title_list[column_no]
-                        self.MatchedResultTable.setItem(row_no,
+                        table.setItem(row_no,
                                                         column_no,
                                                         QtWidgets.QTableWidgetItem(column_title))
                     else:
                         data_value = str(list(data[row_no - 1].values())[column_no])
-                        self.MatchedResultTable.setItem(row_no,
+                        table.setItem(row_no,
                                                         column_no,
                                                         QtWidgets.QTableWidgetItem(data_value))
         else:
-            self.MatchedResultTable.setItem(0, 0, QtWidgets.QTableWidgetItem("兩筆資料完全相符"))
+            table.setItem(0, 0, QtWidgets.QTableWidgetItem("兩筆資料完全相符"))
 
     def refresh_line_edit(self, line_edit, file_name):
         line_edit.setText(file_name)
