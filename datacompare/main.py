@@ -7,12 +7,11 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from customized_main_window import CustomizedMainWindow
+from customized_qtablewiget import CustomizedQTableWidget
 import sys
 from student import StudentList
 from filter import ResultFilter
 from util import load_txt_file_as_dict_list
-from util import get_table_content
 
 
 class Ui_MainWindow(object):
@@ -56,22 +55,17 @@ class Ui_MainWindow(object):
         self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_handed_student_result,
                                                                self.HandedResultTable))
 
-        self.UnhandedResultTable = QtWidgets.QTableWidget(self.centralwidget)
+        self.UnhandedResultTable = CustomizedQTableWidget(self.centralwidget)
         self.UnhandedResultTable.setGeometry(QtCore.QRect(30, 35, 235, 455))
         self.UnhandedResultTable.setObjectName("UnhandedResultTable")
         self.UnhandedResultTable.setColumnCount(0)
         self.UnhandedResultTable.setRowCount(0)
 
-        self.HandedResultTable = QtWidgets.QTableWidget(self.centralwidget)
+        self.HandedResultTable = CustomizedQTableWidget(self.centralwidget)
         self.HandedResultTable.setGeometry(QtCore.QRect(270, 35, 235, 455))
         self.HandedResultTable.setObjectName("HandedResultTable")
         self.HandedResultTable.setColumnCount(0)
         self.HandedResultTable.setRowCount(0)
-
-        self.right_click_menu = MainWindow.createContextMenu()
-        self.copy = QtWidgets.QAction('複製')
-        self.copy.triggered.connect(self.copy_selected_content_to_clipboard)
-        self.right_click_menu.addAction(self.copy)
 
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(230, 260, 120, 80))
@@ -367,13 +361,6 @@ class Ui_MainWindow(object):
         dict_list_data = load_txt_file_as_dict_list(file_name)
         self.input_data_2 = dict_list_data
 
-    def copy_selected_content_to_clipboard(self):
-        unhanded_table_content = get_table_content(self.UnhandedResultTable)
-        handed_table_content = get_table_content(self.HandedResultTable)
-
-        sys_clip = QtWidgets.QApplication.clipboard()
-        sys_clip.setText(unhanded_table_content + handed_table_content)
-
     def get_row_and_column_number(self, data):
         if not data:
             return 1, 1
@@ -410,7 +397,7 @@ class Ui_MainWindow(object):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = CustomizedMainWindow()
+    MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()

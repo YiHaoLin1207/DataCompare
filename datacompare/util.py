@@ -3,22 +3,6 @@ import json
 import codecs
 
 
-def get_table_content(table):
-    columns_num = 0
-    for index in table.selectionModel().selectedIndexes():
-        if index.column() == 0 and index.row() == 0:
-            columns_num += 1
-        elif index.column() != 0 and index.row() == 0:
-            columns_num += 1
-
-    clipboard = ""
-    for count, item in enumerate(table.selectedItems()):
-        if (count + 1) % columns_num == 0:
-            clipboard += item.text() + '\n'
-        else:
-            clipboard += item.text() + '\t'
-    return clipboard
-
 def swap(list_a, list_b):
     temp_list = list_b
     list_b = list_a
