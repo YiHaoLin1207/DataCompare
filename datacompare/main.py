@@ -9,9 +9,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from customized_qtablewiget import CustomizedQTableWidget
 import sys
+import json
 from student import StudentList
 from filter import ResultFilter
 from util import load_txt_file_as_dict_list
+from util import filter_student_list_with_dict_key
 
 
 class Ui_MainWindow(object):
@@ -45,15 +47,13 @@ class Ui_MainWindow(object):
             self.student_list.last_semester_students,
             self.student_list.current_semester_students,
             self.result_filter.filter_list))
-        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_unhanded_student_result,
-                                                               self.UnhandedResultTable))
 
         self.startBtn.clicked.connect(lambda: self.student_list.set_handed_student_result(
             self.student_list.last_semester_students,
             self.student_list.current_semester_students,
             self.result_filter.filter_list))
-        self.startBtn.clicked.connect(lambda: self.show_result(self.student_list.filtered_handed_student_result,
-                                                               self.HandedResultTable))
+
+        self.startBtn.clicked.connect(self.show_result)
 
         self.UnhandedResultTable = CustomizedQTableWidget(self.centralwidget)
         self.UnhandedResultTable.setGeometry(QtCore.QRect(30, 35, 235, 455))
@@ -135,11 +135,11 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.select_condition, 0, 0, 1, 1)
 
         self.unhanded_student_label = QtWidgets.QLabel(self.centralwidget)
-        self.unhanded_student_label.setGeometry(QtCore.QRect(120, 10, 61, 16))
+        self.unhanded_student_label.setGeometry(QtCore.QRect(120, 10, 80, 25))
         self.unhanded_student_label.setObjectName("unhanded_student_label")
 
         self.handed_student_label = QtWidgets.QLabel(self.centralwidget)
-        self.handed_student_label.setGeometry(QtCore.QRect(350, 10, 61, 16))
+        self.handed_student_label.setGeometry(QtCore.QRect(350, 10, 61, 25))
         self.handed_student_label.setObjectName("handed_student_label")
 
         self.result_cls_id = QtWidgets.QCheckBox(self.widget1)
@@ -304,8 +304,8 @@ class Ui_MainWindow(object):
         self.FileOneLabel.setText(_translate("MainWindow", "檔案 1"))
         self.FileOneBrowseBtn.setText(_translate("MainWindow", "瀏覽..."))
 
-        self.unhanded_student_label.setText(_translate("MainWindow", "未繳交學生"))
-        self.handed_student_label.setText(_translate("MainWindow", "已繳交學生"))
+        self.unhanded_student_label.setText(_translate("MainWindow", ""))
+        self.handed_student_label.setText(_translate("MainWindow", ""))
 
         self.select_condition.setText(_translate("MainWindow", "結果條件篩選"))
         self.result_cls_id.setText(_translate("MainWindow", "cls_id"))
@@ -363,7 +363,7 @@ class Ui_MainWindow(object):
 
     def get_row_and_column_number(self, data):
         if not data:
-            return 1, 1
+            return 0, 0
         row_count = len(data) + 1  # one more for title
         column_count = len(data[0])
         return row_count, column_count
@@ -373,7 +373,43 @@ class Ui_MainWindow(object):
         table.setRowCount(row_count)
         table.setColumnCount(column_count)
 
-    def show_result(self, data, table):
+    def show_result(self):
+        self.clean_table()
+
+        if not self.input_data_1 and not self.input_data_2:
+            self.unhanded_student_label.setText('未匯入資料')
+            self.handed_student_label.setText('')
+            return 0
+
+        elif not self.input_data_1:
+            self.unhanded_student_label.setText('學生資料')
+            self.handed_student_label.setText('')
+            filtered_data = filter_student_list_with_dict_key(self.input_data_2, self.result_filter.filter_list)
+            self.show_table_result(filtered_data, self.UnhandedResultTable)
+
+        elif not self.input_data_2:
+            self.unhanded_student_label.setText('學生資料')
+            self.handed_student_label.setText('')
+            filtered_data = filter_student_list_with_dict_key(self.input_data_1, self.result_filter.filter_list)
+            self.show_table_result(filtered_data, self.UnhandedResultTable)
+
+        elif json.dumps(self.input_data_1) == json.dumps(self.input_data_2):
+            self.unhanded_student_label.setText('資料完全相同')
+            self.handed_student_label.setText('')
+
+        else:
+            self.unhanded_student_label.setText('未繳交學生')
+            self.handed_student_label.setText('已繳交學生')
+            self.show_table_result(self.student_list.filtered_unhanded_student_result,
+                                   self.UnhandedResultTable)
+            self.show_table_result(self.student_list.filtered_handed_student_result,
+                                   self.HandedResultTable)
+
+    def clean_table(self):
+        self.show_table_result([], self.UnhandedResultTable)
+        self.show_table_result([], self.HandedResultTable)
+
+    def show_table_result(self, data, table):
         self.set_widget_table_row_and_column(data, table)
         if data:
             title_list = list(data[0].keys())
@@ -389,8 +425,6 @@ class Ui_MainWindow(object):
                         table.setItem(row_no,
                                       column_no,
                                       QtWidgets.QTableWidgetItem(data_value))
-        else:
-            table.setItem(0, 0, QtWidgets.QTableWidgetItem("兩筆資料完全相符"))
 
     def refresh_line_edit(self, line_edit, file_name):
         line_edit.setText(file_name)
