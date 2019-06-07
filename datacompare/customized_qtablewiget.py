@@ -25,18 +25,23 @@ class CustomizedQTableWidget(QtWidgets.QTableWidget):
 
     def copySelectedContent(self):
         columns_num = 0
-        for index in self.selectionModel().selectedIndexes():
-            if index.column() == 0 and index.row() == 0:
+        selected_indexes = self.selectionModel().selectedIndexes()
+        for count, index in enumerate(selected_indexes):
+            if count == 0:
                 columns_num += 1
-            elif index.column() != 0 and index.row() == 0:
-                columns_num += 1
+            else:
+                previous_index_column_pos = selected_indexes[count - 1].column()
+                current_index_column_pos = selected_indexes[count].column()
+                if previous_index_column_pos < current_index_column_pos:
+                    columns_num += 1
+                else:
+                    break
 
-        clipboard = ""
+        clipboard_text = ""
         for count, item in enumerate(self.selectedItems()):
             if (count + 1) % columns_num == 0:
-                clipboard += item.text() + '\n'
+                clipboard_text += item.text() + '\n'
             else:
-                clipboard += item.text() + '\t'
-
+                clipboard_text += item.text() + '\t'
         sys_clip = QtWidgets.QApplication.clipboard()
-        sys_clip.setText(clipboard)
+        sys_clip.setText(clipboard_text)
