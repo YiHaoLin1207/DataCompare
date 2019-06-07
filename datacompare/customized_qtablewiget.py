@@ -1,6 +1,6 @@
 #coding=utf-8
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
 
@@ -14,9 +14,16 @@ class CustomizedQTableWidget(QtWidgets.QTableWidget):
         self.customContextMenuRequested.connect(self.showContextMenu)
         self.contextMenu = QtWidgets.QMenu(self)
 
-        self.copy = QtWidgets.QAction('複製')
+        self.copy = QtWidgets.QAction('複製 (Ctrl+C)')
+        self.copy.setShortcut(QtGui.QKeySequence.Copy)
+        self.copy.setShortcutContext(Qt.WidgetWithChildrenShortcut)
+        self.addAction(self.copy)
+
+        self.select_all = QtWidgets.QAction('全選 (Ctrl+A)')
         self.contextMenu.addAction(self.copy)
+        self.contextMenu.addAction(self.select_all)
         self.copy.triggered.connect(self.copySelectedContent)
+        self.select_all.triggered.connect(self.selectAll)
 
     def showContextMenu(self, pos):
         # 菜单显示前，将它移动到鼠标点击的位置
