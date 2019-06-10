@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from util import swap
 from util import filter_student_list_with_dict_key
 from copy import deepcopy
-import json
+
 
 
 class StudentList:
@@ -14,23 +13,22 @@ class StudentList:
         self.filtered_handed_student_result = []
 
     def set_unhanded_student_result(self, last_semester_students, current_semester_students, filter_list):
-        unhanded_student_result = self.get_all_unfinished_students(last_semester_students,
-                                                                   current_semester_students)
+        unhanded_student_result = self.get_unfinished_students(last_semester_students,
+                                                               current_semester_students)
         self.filtered_unhanded_student_result = filter_student_list_with_dict_key(unhanded_student_result,
                                                                                   filter_list)
 
     def set_handed_student_result(self, last_semester_students, current_semester_students, filter_list):
-        handed_student_result = self.get_finished_older_students(last_semester_students,
-                                                                 current_semester_students)
+        handed_older_student_result = self.get_finished_older_students(last_semester_students,
+                                                                       current_semester_students)
+        handed_new_student_result = self.get_finished_new_students(last_semester_students,
+                                                                   current_semester_students)
+        handed_student_result = handed_older_student_result + handed_new_student_result
         self.filtered_handed_student_result = filter_student_list_with_dict_key(handed_student_result,
                                                                                 filter_list)
 
     def set_semester_list(self, input_data_1, input_data_2):
-        # Note: input_data_1 < input_data_2 may cause some problem
-        if json.dumps(input_data_1) < json.dumps(input_data_2):
-            input_data_1, input_data_2 = swap(input_data_1, input_data_2)
-
-        if (input_data_1 and input_data_2) and json.dumps(input_data_1) != json.dumps(input_data_2):
+        if input_data_1 and input_data_2:
             input_data_1 = self.remove_graduated_students(input_data_1)
 
         self.last_semester_students = input_data_1
@@ -45,9 +43,10 @@ class StudentList:
                 if l_student['std_idno'] == c_student['std_idno']:
                     finished_older_students.append(c_student)
                     current_semester_students.pop(index)
+                    
         return finished_older_students
 
-    def get_unfinished_older_students(self, last_semester_students, current_semester_students):
+    def get_unfinished_students(self, last_semester_students, current_semester_students):
         last_semester_students = deepcopy(last_semester_students)
         current_semester_students = deepcopy(current_semester_students)
         finished_older_students = self.get_finished_older_students(last_semester_students,
@@ -60,7 +59,7 @@ class StudentList:
 
         return unfinished_older_students
 
-    def get_new_students(self, last_semester_students, current_semester_students):
+    def get_finished_new_students(self, last_semester_students, current_semester_students):
         last_semester_students = deepcopy(last_semester_students)
         current_semester_students = deepcopy(current_semester_students)
         finished_older_students = self.get_finished_older_students(last_semester_students,
@@ -72,15 +71,6 @@ class StudentList:
         new_students = current_semester_students
 
         return new_students
-
-    def get_all_unfinished_students(self, last_semester_students, current_semester_students):
-        unfinished_older_students = self.get_unfinished_older_students(last_semester_students,
-                                                                       current_semester_students)
-        new_students = self.get_new_students(last_semester_students,
-                                             current_semester_students)
-        all_unfinished_students = unfinished_older_students + new_students
-
-        return all_unfinished_students
 
     def remove_graduated_students(self, studemts):
         remained_result = []

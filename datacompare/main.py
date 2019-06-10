@@ -299,9 +299,9 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.startBtn.setText(_translate("MainWindow", "開始比對"))
-        self.FileTwoLable.setText(_translate("MainWindow", "檔案 2"))
+        self.FileTwoLable.setText(_translate("MainWindow", "此學期學生資料"))
         self.FileTwoBrowseBtn.setText(_translate("MainWindow", "瀏覽..."))
-        self.FileOneLabel.setText(_translate("MainWindow", "檔案 1"))
+        self.FileOneLabel.setText(_translate("MainWindow", "上學期學生資料"))
         self.FileOneBrowseBtn.setText(_translate("MainWindow", "瀏覽..."))
 
         self.unhanded_student_label.setText(_translate("MainWindow", ""))

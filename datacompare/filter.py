@@ -213,8 +213,10 @@ class ResultFilter(BaseFilter):
         super(ResultFilter, self).__init__()
         self.std_name = QtCore.Qt.Checked
         self.std_idno = QtCore.Qt.Checked
+        self.std_id = QtCore.Qt.Checked
         self.std_mobile = QtCore.Qt.Checked
         self.std_tel = QtCore.Qt.Checked
+        self.kind_name = QtCore.Qt.Checked
 
     @property
     def filter_list(self):
